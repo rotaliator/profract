@@ -1,7 +1,8 @@
+import sys
 from itertools import product, repeat
 from functools import partial
 from array import array
-from PIL import Image
+import png
 
 IMAGE_WIDTH = 800
 IMAGE_HEIGHT = 600
@@ -37,9 +38,15 @@ def mandel(re1, im1, re2, im2, width, height):
 
 
 def main():
+    try:
+        outfile = sys.argv[1]
+    except IndexError:
+        outfile = "mandel.png"
+
     m = mandel(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
-    i = Image.frombytes(mode='L', data=bytes(m), size=(IMAGE_WIDTH, IMAGE_HEIGHT))
-    i.save('mandel.png')
+    writer = png.Writer(width=IMAGE_WIDTH, height=IMAGE_HEIGHT, greyscale=True)
+    with open(outfile, "wb") as f:
+        writer.write_array(f, m)
 
 if __name__ == '__main__':
     main()
