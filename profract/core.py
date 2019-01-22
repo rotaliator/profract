@@ -2,10 +2,21 @@ import sys
 from itertools import product, repeat
 from functools import partial
 from array import array
+from contextlib import contextmanager
+import time
 import png
 
 IMAGE_WIDTH = 800
 IMAGE_HEIGHT = 600
+
+
+class Timer:
+    def __enter__(self):
+        self.start = time.time()
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.interval = time.time() - self.start
+        return self
 
 def scale(comp_size, pixel_size, pixel):
     return pixel*comp_size / pixel_size
@@ -43,7 +54,9 @@ def main():
     except IndexError:
         outfile = "mandel.png"
 
-    m = mandel(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
+    with Timer() as t:
+        m = mandel(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
+    print("Calculations took: {:.2f} sec".format( t.interval))
     writer = png.Writer(width=IMAGE_WIDTH, height=IMAGE_HEIGHT, greyscale=True)
     with open(outfile, "wb") as f:
         writer.write_array(f, m)
