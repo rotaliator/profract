@@ -2,7 +2,8 @@ from __future__ import print_function
 import sys
 import time
 import png
-from mandel.pure_python import mandel
+from mandel.pure_python import mandel as mandel_py
+from mandel.pure_python_multiproc import mandel as mandel_multiproc
 
 IMAGE_WIDTH = 800
 IMAGE_HEIGHT = 600
@@ -30,8 +31,12 @@ def main():
         outfile = "mandel.png"
 
     with Timer() as t:
-        m = mandel(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
-    print("Calculations took: {:.2f} sec".format( t.interval))
+        m = mandel_py(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
+    print("Single proc calculations took: {:.2f} sec".format( t.interval))
+
+    with Timer() as t:
+        m = mandel_multiproc(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
+    print("Multi proc calculations took: {:.2f} sec".format( t.interval))
 
     save_array_as_png(m, outfile, IMAGE_WIDTH, IMAGE_HEIGHT)
 
