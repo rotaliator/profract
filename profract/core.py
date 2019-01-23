@@ -2,7 +2,6 @@ import sys
 from itertools import product, repeat
 from functools import partial
 from array import array
-from contextlib import contextmanager
 import time
 import png
 
@@ -24,7 +23,7 @@ def scale(comp_size, pixel_size, pixel):
 def mandel_for(re, im, max_dist=2**6, max_iter=255):
     z_re, z_im = re, im
     for i in range(max_iter):
-        z_re, z_im = (z_re*z_re - z_im*z_im + re, 2*z_re*z_im + im)
+        z_re, z_im = z_re*z_re - z_im*z_im + re, 2*z_re*z_im + im
         if ((z_re*z_re + z_im*z_im) >= max_dist):
             return i
     return max_iter
