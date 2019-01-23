@@ -25,11 +25,6 @@ def save_array_as_png(array, filename, width, height):
         writer.write_array(f, array)
 
 def main():
-    try:
-        outfile = sys.argv[1]
-    except IndexError:
-        outfile = "mandel.png"
-
     with Timer() as t:
         m = mandel_py(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
     print("Single proc calculations took: {:.2f} sec".format( t.interval))
