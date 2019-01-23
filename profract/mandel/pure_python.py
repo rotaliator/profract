@@ -13,7 +13,7 @@ def mandel_for(re, im, max_dist=2**6, max_iter=255):
             return i
     return max_iter
 
-def mandel(re1, im1, re2, im2, width, height):
+def mandel_classic(re1, im1, re2, im2, width, height):
     """
     Calculates iterations of mandelbrot set into array of floats
     pure Python reference implementation
@@ -30,3 +30,24 @@ def mandel(re1, im1, re2, im2, width, height):
         index = x + y*width
         a[index] = mandel_for(re1+scale_re(x), im1+scale_im(y))
     return a
+
+def f(re_im):
+    re, im = re_im
+    return mandel_for(re, im)
+
+def mandel_functional(re1, im1, re2, im2, width, height):
+    """
+    Calculates iterations of mandelbrot set into array of floats
+    pure Python reference implementation
+    re1, im1 - upper left corner
+    re2, im2 - lower right corner
+    width, height - size of output image
+    """
+    comp_size_re = re2 - re1
+    comp_size_im = im2 - im1
+    scale_re = partial(scale, comp_size_re, width)
+    scale_im = partial(scale, comp_size_im, height)
+    pixels = product(range(height), range(width))
+    points = ((re1+scale_re(x), im1+scale_im(y)) for y, x in pixels)
+
+    return array('B', map(f, points))
