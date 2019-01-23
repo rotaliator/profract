@@ -15,6 +15,8 @@ class Timer:
         self.start = time.time()
         return self
     def __exit__(self, exc_type, exc_value, traceback):
+        if exc_value:
+            return False
         self.interval = time.time() - self.start
         return self
 
