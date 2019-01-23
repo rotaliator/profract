@@ -49,6 +49,10 @@ def mandel(re1, im1, re2, im2, width, height):
         a[index] = mandel_for(re1+scale_re(x), im1+scale_im(y))
     return a
 
+def save_array_as_png(array, filename, width, height):
+    writer = png.Writer(width=width, height=height, greyscale=True)
+    with open(filename, "wb") as f:
+        writer.write_array(f, array)
 
 def main():
     try:
@@ -59,9 +63,8 @@ def main():
     with Timer() as t:
         m = mandel(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
     print("Calculations took: {:.2f} sec".format( t.interval))
-    writer = png.Writer(width=IMAGE_WIDTH, height=IMAGE_HEIGHT, greyscale=True)
-    with open(outfile, "wb") as f:
-        writer.write_array(f, m)
+
+    save_array_as_png(m, outfile, IMAGE_WIDTH, IMAGE_HEIGHT)
 
 if __name__ == '__main__':
     main()
