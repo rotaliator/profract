@@ -25,4 +25,4 @@ def mandel(re1, im1, re2, im2, width, height):
     pool = Pool()
     pixels = product(range(height), range(width))
     points = ((re1+scale_re(x), im1+scale_im(y)) for y, x in pixels)
-    return pool.map(f, points)
+    return array('B', pool.map(f, points))
