@@ -5,6 +5,7 @@ import png
 from mandel.pure_python import mandel_classic
 from mandel.pure_python import mandel_functional
 from mandel.pure_python_multiproc import mandel as mandel_multiproc
+from mandel.cython import mandel_cython
 
 IMAGE_WIDTH = 800
 IMAGE_HEIGHT = 600
@@ -26,6 +27,7 @@ def save_array_as_png(array, filename, width, height):
         writer.write_array(f, array)
 
 def main():
+    """
     with Timer() as t:
         m = mandel_classic(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
     print("Single proc calculations took: {:.2f} sec".format( t.interval))
@@ -35,11 +37,17 @@ def main():
         m = mandel_functional(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
     print("Single proc higher order functions calculations took: {:.2f} sec".format( t.interval))
     save_array_as_png(m, "mandel_functional.png", IMAGE_WIDTH, IMAGE_HEIGHT)
-
+    """
     with Timer() as t:
         m = mandel_multiproc(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
     print("Multi proc calculations took: {:.2f} sec".format( t.interval))
     save_array_as_png(m, "mandel_multiproc.png", IMAGE_WIDTH, IMAGE_HEIGHT)
+
+    with Timer() as t:
+        m = mandel_cython(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
+    print("Cython calculations took: {:.2f} sec".format( t.interval))
+    save_array_as_png(m, "mandel_cython.png", IMAGE_WIDTH, IMAGE_HEIGHT)
+
 
 if __name__ == '__main__':
     main()
