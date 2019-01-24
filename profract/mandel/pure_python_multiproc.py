@@ -1,4 +1,8 @@
 from multiprocessing import Pool
+# from multiprocessing.pool import ThreadPool as Pool
+# For multithreaded version just uncomment line above.
+# It is cpu bound task, so it should not speed up calculations
+# [in fact it will slow them ;) ]
 from .pure_python import scale, mandel_for
 
 from array import array
