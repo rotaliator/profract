@@ -1,4 +1,6 @@
 from itertools import repeat
+# cython: embedsignature=True
+# cython: language_level=3
 from cpython cimport array
 import array
 
