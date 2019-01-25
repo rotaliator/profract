@@ -1,11 +1,11 @@
-from itertools import repeat
 # cython: embedsignature=True
 # cython: language_level=3
+cimport cython
 from cpython cimport array
-import array
 
 
-cdef float scale(float comp_size, int pixels, int pixel):
+@cython.cdivision(True)
+cdef float scale(float comp_size, int pixels, int pixel) except *:
     return pixel*comp_size / pixels
 
 cdef unsigned char mandel_for(float re, float im, int max_dist=2**6, int max_iter=255):
@@ -17,17 +17,19 @@ cdef unsigned char mandel_for(float re, float im, int max_dist=2**6, int max_ite
             return i
     return max_iter
 
+@cython.boundscheck(False)
 cpdef unsigned char[:] mandel_cython(float re1, float im1, float re2, float im2, int width, int height):
     """
     Calculates iterations of mandelbrot set into array of floats
-    pure Python reference implementation
+    Cython optimized implementation
     re1, im1 - upper left corner
     re2, im2 - lower right corner
     width, height - size of output image
     """
+    cdef int size = width*height
     cdef float comp_size_re = re2 - re1
     cdef float comp_size_im = im2 - im1
-    cdef array.array a = array.array('B', repeat(255, width*height))
+    cdef unsigned char[:] a = cython.view.array(shape=(size,), itemsize=sizeof(unsigned char), format='B')
 
     cdef int x = 0
     cdef int y = 0
