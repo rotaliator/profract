@@ -35,6 +35,8 @@ cpdef unsigned char[:] mandel_cython(double re1, double im1, double re2, double 
     cdef int y = 0
     cdef int index = 0
     cdef double re, im
+    cdef unsigned char r
+
     while y < height:
         x = 0
         while x < width:
