@@ -34,12 +34,14 @@ cpdef unsigned char[:] mandel_cython(double re1, double im1, double re2, double 
     cdef int x = 0
     cdef int y = 0
     cdef int index = 0
-
+    cdef double re, im
     while y < height:
         x = 0
         while x < width:
             index = x + y*width
-            r = mandel_for(re1+scale(comp_size_re, width, x), im1+scale(comp_size_im, height, y))
+            re = re1+scale(comp_size_re, width, x)
+            im = im1+scale(comp_size_im, height, y)
+            r = mandel_for(re, im)
             a[index] = r
             x = x + 1
         y = y + 1
