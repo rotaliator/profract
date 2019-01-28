@@ -1,6 +1,6 @@
 import pytest
 try:
-    from profract.mandel.cython import mandel_cython, mandel_cython_multiproc
+    from profract.mandel.mandel_cython import mandel_cython, mandel_cython_multiproc
     CYTHON = True
 except:
     CYTHON = False
