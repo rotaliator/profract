@@ -1,6 +1,11 @@
 import pytest
-from profract.mandel.cython import mandel_cython, mandel_cython_multiproc
+try:
+    from profract.mandel.cython import mandel_cython, mandel_cython_multiproc
+    CYTHON = True
+except:
+    CYTHON = False
 
+@pytest.mark.skipif(not CYTHON, reason="No cython, not test")
 @pytest.mark.parametrize("re, im, expected", [
     (1.0, 1.0, 1),
     (1.0, -1.0, 1),
@@ -12,6 +17,7 @@ def test_mandel_cython(re, im, expected):
     assert result[0] == expected
 
 
+@pytest.mark.skipif(not CYTHON, reason="No cython, not test")
 @pytest.mark.parametrize("re, im, expected", [
     (1.0, 1.0, 1),
     (1.0, -1.0, 1),
@@ -22,6 +28,7 @@ def test_mandel_cython_multiproc(re, im, expected):
     result = mandel_cython_multiproc(re, im, re, im, 1, 1)
     assert result[0] == expected
 
+@pytest.mark.skipif(not CYTHON, reason="No cython, not test")
 def test_for_profiling():
     result = mandel_cython(-2.0, -1.0, 1.0, 1.0, 1600, 1200)
     result_len = len(result)
