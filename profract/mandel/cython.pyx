@@ -29,6 +29,20 @@ cpdef unsigned char[:] mandel_cython(double re1, double im1, double re2, double 
     cdef double comp_size_im = im2 - im1
     cdef unsigned char[:] a = cython.view.array(shape=(size,), itemsize=sizeof(unsigned char), format='B')
 
+    cdef int x, y, index
+    cdef double re, im
+    cdef unsigned char r
+    cdef double pixel_size_re = comp_size_re / width
+    cdef double pixel_size_im = comp_size_im / height
+
+    for y in range(height):
+        im = im1+y*pixel_size_im
+        for x in range(width):
+            index = x + y*width
+            re = re1+x*pixel_size_re
+            r = mandel_for(re, im)
+            a[index] = r
+    return a
     cdef int x = 0
     cdef int y = 0
     cdef int index = 0
