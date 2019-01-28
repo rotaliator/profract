@@ -39,7 +39,7 @@ def main():
         print(e)
 
     try:
-        from mandel.cython import mandel_cython
+        from mandel.mandel_cython import mandel_cython
         with Timer() as t:
             m = mandel_cython(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
         print("Cython calculations took: {:.2f} sec".format( t.interval))
@@ -48,7 +48,7 @@ def main():
         print(e)
 
     try:
-        from mandel.cython import mandel_cython_multiproc
+        from mandel.mandel_cython import mandel_cython_multiproc
         with Timer() as t:
             m = mandel_cython_multiproc(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
         print("Cython multiproc calculations took: {:.2f} sec".format( t.interval))
