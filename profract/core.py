@@ -53,5 +53,14 @@ def main():
     except ImportError as e:
         print(e)
 
+    try:
+        from mandel.cython import mandel_cython_multiproc
+        with Timer() as t:
+            m = mandel_cython_multiproc(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
+        print("Cython multiproc calculations took: {:.2f} sec".format( t.interval))
+        save_array_as_png(m, "mandel_cython_multiproc.png", IMAGE_WIDTH, IMAGE_HEIGHT)
+    except ImportError as e:
+        print(e)
+
 if __name__ == '__main__':
     main()
