@@ -10,6 +10,7 @@ from cython.parallel cimport parallel, prange
 cdef unsigned char mandel_for(double re, double im, int max_dist=2**6, int max_iter=255) nogil:
     cdef double z_re = re
     cdef double z_im = im
+    cdef int i
     for i in range(max_iter):
         z_re, z_im = z_re*z_re - z_im*z_im + re, 2*z_re*z_im + im
         if ((z_re*z_re + z_im*z_im) >= max_dist):
@@ -77,4 +78,5 @@ cpdef unsigned char[:] mandel_cython_multiproc(double re1, double im1, double re
                 re = re1 + x*pixel_size_re
                 r = mandel_for(re, im)
                 a[index] = r
+
     return a
