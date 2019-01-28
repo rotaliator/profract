@@ -29,12 +29,6 @@ def main():
     print("Single proc calculations took: {:.2f} sec".format( t.interval))
     save_array_as_png(m, "mandel_classic.png", IMAGE_WIDTH, IMAGE_HEIGHT)
 
-    from mandel.pure_python import mandel_functional
-    with Timer() as t:
-        m = mandel_functional(-2.0, -1.0, 1.0, 1.0, IMAGE_WIDTH, IMAGE_HEIGHT)
-    print("Single proc higher order functions calculations took: {:.2f} sec".format( t.interval))
-    save_array_as_png(m, "mandel_functional.png", IMAGE_WIDTH, IMAGE_HEIGHT)
-
     try:
         from mandel.pure_python_multiproc import mandel as mandel_multiproc
         with Timer() as t:
