@@ -5,7 +5,7 @@ from cpython cimport array
 
 
 @cython.cdivision(True)
-cdef double scale(double comp_size, int pixels, int pixel) except *:
+cdef double scale(double comp_size, int pixels, int pixel):
     return pixel*comp_size / pixels
 
 cdef unsigned char mandel_for(double re, double im, int max_dist=2**6, int max_iter=255):
