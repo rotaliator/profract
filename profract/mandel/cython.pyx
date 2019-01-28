@@ -2,13 +2,10 @@
 # cython: language_level=3
 cimport cython
 from cpython cimport array
+from cython.parallel import parallel, prange
 
 
-@cython.cdivision(True)
-cdef double scale(double comp_size, int pixels, int pixel):
-    return pixel*comp_size / pixels
-
-cdef unsigned char mandel_for(double re, double im, int max_dist=2**6, int max_iter=255):
+cdef unsigned char mandel_for(double re, double im, int max_dist=2**6, int max_iter=255) nogil:
     cdef double z_re = re
     cdef double z_im = im
     for i in range(max_iter):
@@ -17,6 +14,7 @@ cdef unsigned char mandel_for(double re, double im, int max_dist=2**6, int max_i
             return i
     return max_iter
 
+@cython.cdivision(True)
 @cython.boundscheck(False)
 cpdef unsigned char[:] mandel_cython(double re1, double im1, double re2, double im2, int width, int height):
     """
@@ -36,13 +34,15 @@ cpdef unsigned char[:] mandel_cython(double re1, double im1, double re2, double 
     cdef int index = 0
     cdef double re, im
     cdef unsigned char r
+    cdef double pixel_size_re = comp_size_re / width
+    cdef double pixel_size_im = comp_size_im / height
 
     while y < height:
         x = 0
+        im = im1+y*pixel_size_im
         while x < width:
             index = x + y*width
-            re = re1+scale(comp_size_re, width, x)
-            im = im1+scale(comp_size_im, height, y)
+            re = re1+x*pixel_size_re
             r = mandel_for(re, im)
             a[index] = r
             x = x + 1
