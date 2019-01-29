@@ -6,9 +6,11 @@ from array import array
 def mandel_for(re, im, max_dist=2**6, max_iter=255):
     z_re, z_im = re, im
     for i in range(max_iter):
-        z_re, z_im = z_re*z_re - z_im*z_im + re, 2*z_re*z_im + im
-        if ((z_re*z_re + z_im*z_im) >= max_dist):
+        re_sqr = z_re*z_re
+        im_sqr = z_im*z_im
+        if ((re_sqr + im_sqr) >= max_dist):
             return i
+        z_re, z_im = re_sqr - im_sqr + re, 2*z_re*z_im + im
     return max_iter
 
 def mandel_classic(re1, im1, re2, im2, width, height):

@@ -11,10 +11,13 @@ cdef unsigned char mandel_for(double re, double im, int max_dist=2**6, int max_i
     cdef double z_re = re
     cdef double z_im = im
     cdef int i
+    cdef double re_sqr, im_sqr
     for i in range(max_iter):
-        z_re, z_im = z_re*z_re - z_im*z_im + re, 2*z_re*z_im + im
-        if ((z_re*z_re + z_im*z_im) >= max_dist):
+        re_sqr = z_re*z_re
+        im_sqr = z_im*z_im
+        if ((re_sqr + im_sqr) >= max_dist):
             return i
+        z_re, z_im = re_sqr - im_sqr + re, 2*z_re*z_im + im
     return max_iter
 
 @cython.cdivision(True)
